@@ -1,0 +1,43 @@
+main{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    div{
+        display: flex;
+        flex-direction: column;
+        place-items: center;
+        gap: 1rem;
+        h1{
+            color: #333;
+            font-size: 3rem;
+        }
+        form{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            input{
+                padding: 0.5rem;
+                border: 1px solid #ccc;
+                border-radius: 0.5rem;
+            }
+            select{
+                padding: 0.5rem;
+                border: 1px solid #ccc;
+                border-radius: 0.5rem;
+            }
+            button{
+                padding: 0.5rem;
+                border: none;
+                border-radius: 0.5rem;
+                background-color: #333;
+                color: #fff;
+                cursor: pointer;
+            }
+        }
+    }
+}

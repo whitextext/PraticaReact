@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 // ! Importa o arquivo de estilos global
-import '@/styles/main.scss';
+import '@/styles/Root.scss';
 
 import App from './App.tsx';
 
