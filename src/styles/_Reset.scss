@@ -1,0 +1,13 @@
+@use "sass:map";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Isso aqui é vida. Impede que paddings aumentem o tamanho dos elementos */
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif; /* Ou a fonte que você quiser */
+  background-color: #f0f0f0; /* Cor de fundo padrão */
+  -webkit-font-smoothing: antialiased;
+}
