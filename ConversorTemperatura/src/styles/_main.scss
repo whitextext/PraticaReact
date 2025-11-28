@@ -16,10 +16,17 @@ main{
         }
         form{
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-between;
             align-items: center;
             gap: 1rem;
+            div{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 1rem;
+            }
             input{
                 padding: 0.5rem;
                 border: 1px solid #ccc;
