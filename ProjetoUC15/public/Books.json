@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "title": "O Pequeno Príncipe",
+    "author": "Antoine de Saint-Exupéry",
+    "price": 15.0,
+    "type": "venda",
+    "condition": "Usado - Bom",
+    "cover": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
+    "desc": "Um clássico da literatura mundial. O livro apresenta marcas leves de uso na capa, mas as páginas estão intactas sem grifos."
+  },
+  {
+    "id": 2,
+    "title": "1984",
+    "author": "George Orwell",
+    "price": 25.0,
+    "type": "troca",
+    "condition": "Seminovo",
+    "cover": "https://images.unsplash.com/photo-1531901599143-df5010ab9438?auto=format&fit=crop&q=80&w=400",
+    "desc": "Edição especial de capa dura. Lido apenas uma vez. Aceito troca por ficção científica contemporânea."
+  },
+  {
+    "id": 3,
+    "title": "Dom Casmurro",
+    "author": "Machado de Assis",
+    "price": 12.0,
+    "type": "venda",
+    "condition": "Usado - Marcas do tempo",
+    "cover": "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&q=80&w=400",
+    "desc": "Edição de bolso antiga. Folhas amareladas, ideal para quem gosta de livros com história."
+  },
+  {
+    "id": 4,
+    "title": "Harry Potter e a Pedra Filosofal",
+    "author": "J.K. Rowling",
+    "price": 35.0,
+    "type": "venda",
+    "condition": "Novo",
+    "cover": "https://images.unsplash.com/photo-1618666012174-83b441c0bc76?auto=format&fit=crop&q=80&w=400",
+    "desc": "Livro nunca lido, ainda no plástico. Recebi de presente mas já tinha."
+  },
+  {
+    "id": 5,
+    "title": "Sapiens: Uma Breve História",
+    "author": "Yuval Noah Harari",
+    "price": 0,
+    "type": "troca",
+    "condition": "Bom",
+    "cover": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=400",
+    "desc": "Troco por 'Homo Deus' ou livros de história geral. Tem alguns grifos a lápis."
+  },
+  {
+    "id": 6,
+    "title": "O Senhor dos Anéis",
+    "author": "J.R.R. Tolkien",
+    "price": 45.0,
+    "type": "venda",
+    "condition": "Seminovo",
+    "cover": "https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?auto=format&fit=crop&q=80&w=400",
+    "desc": "Volume único. Estado impecável de conservação."
+  },
+  {
+    "id": 7,
+    "title": "A Revolução dos Bichos",
+    "author": "George Orwell",
+    "price": 18.0,
+    "type": "venda",
+    "condition": "Usado - Bom",
+    "cover": "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=400",
+    "desc": "Capa mole. Leves desgastes nas pontas."
+  },
+  {
+    "id": 8,
+    "title": "It: A Coisa",
+    "author": "Stephen King",
+    "price": 50.0,
+    "type": "troca",
+    "condition": "Usado - Bom",
+    "cover": "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&q=80&w=400",
+    "desc": "Troco por box de Sherlock Holmes ou Edgar Allan Poe."
+  }
+]
