@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Livraria Circular - Sebo Online</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Ícones -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "brand-brown": "#5D4037",
+              "brand-cream": "#F5F5DC",
+              "brand-accent": "#D84315",
+              paper: "#FFFDF5",
+            },
+            fontFamily: {
+              serif: ["Merriweather", "serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #f3f4f6;
+      }
+      .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    </style>
+  </head>
+  <body class="font-sans text-gray-800 flex flex-col min-h-screen">
+    <!-- Notificação Toast (Escondido por padrão) -->
+    <div
+      id="toast"
+      class="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex items-center gap-2"
+    >
+      <i class="fas fa-check-circle"></i>
+      <span id="toast-message">Item adicionado!</span>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+      <div class="container mx-auto px-4 py-3">
+        <div
+          class="flex flex-col md:flex-row items-center justify-between gap-4"
+        >
+          <!-- Logo -->
+          <div
+            class="flex items-center gap-2 cursor-pointer"
+            onclick="window.scrollTo(0,0)"
+          >
+            <i class="fas fa-book-open text-brand-accent text-3xl"></i>
+            <div>
+              <h1 class="font-serif text-2xl font-bold text-brand-brown">
+                Livraria Circular
+              </h1>
+              <p class="text-xs text-gray-500 tracking-wider uppercase">
+                Troca & Venda
+              </p>
+            </div>
+          </div>
+
+          <!-- Barra de Pesquisa -->
+          <div class="relative w-full md:w-1/2 lg:w-1/3">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Busque por título ou autor..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-colors"
+            />
+            <i
+              class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            ></i>
+          </div>
+
+          <!-- Ações do Usuário -->
+          <div class="flex items-center gap-6">
+            <button
+              class="flex items-center gap-1 text-gray-600 hover:text-brand-accent transition"
+            >
+              <i class="far fa-user"></i>
+              <span class="hidden sm:inline">Entrar</span>
+            </button>
+            <button
+              class="relative text-brand-brown hover:text-brand-accent transition"
+            >
+              <i class="fas fa-shopping-bag text-2xl"></i>
+              <span
+                id="cart-count"
+                class="absolute -top-2 -right-2 bg-brand-accent text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full"
+                >0</span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+      class="bg-brand-brown text-brand-cream py-12 md:py-20 relative overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/binding-dark.png')]"
+      ></div>
+      <div class="container mx-auto px-4 text-center relative z-10">
+        <h2 class="font-serif text-3xl md:text-5xl font-bold mb-4">
+          Dê uma nova vida às suas histórias
+        </h2>
+        <p class="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto">
+          O melhor lugar para comprar livros usados, trocar raridades e
+          economizar na sua próxima leitura.
+        </p>
+        <div class="flex justify-center gap-4">
+          <button
+            onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})"
+            class="bg-brand-accent hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-full transition shadow-lg"
+          >
+            Explorar Acervo
+          </button>
+          <button
+            class="bg-transparent border-2 border-brand-cream hover:bg-brand-cream hover:text-brand-brown text-brand-cream font-bold py-3 px-8 rounded-full transition"
+          >
+            Quero Vender
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conteúdo Principal -->
+    <main id="catalog" class="flex-grow container mx-auto px-4 py-12">
+      <!-- Controles e Filtros -->
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4"
+      >
+        <h3
+          class="text-2xl font-serif font-bold text-gray-800 border-l-4 border-brand-accent pl-3"
+        >
+          Acervo Disponível
+        </h3>
+
+        <div
+          class="flex bg-white rounded-lg p-1 shadow-sm border border-gray-200"
+        >
+          <button
+            onclick="filterBooks('all')"
+            class="filter-btn active px-4 py-2 rounded-md text-sm font-medium bg-brand-brown text-white transition"
+          >
+            Todos
+          </button>
+          <button
+            onclick="filterBooks('venda')"
+            class="filter-btn px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100 transition"
+          >
+            Comprar
+          </button>
+          <button
+            onclick="filterBooks('troca')"
+            class="filter-btn px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100 transition"
+          >
+            Trocar
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid de Livros -->
+      <div
+        id="book-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
+        <!-- Os livros serão inseridos aqui via JavaScript -->
+      </div>
+
+      <!-- Mensagem de Nenhum Resultado -->
+      <div id="no-results" class="hidden text-center py-12">
+        <i class="fas fa-book-dead text-4xl text-gray-300 mb-3"></i>
+        <p class="text-gray-500">
+          Nenhum livro encontrado com esses critérios.
+        </p>
+      </div>
+    </main>
+
+    <!-- Seção Informativa -->
+    <section class="bg-white border-t border-gray-200 py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-3 gap-8 text-center">
+          <div class="p-6">
+            <div
+              class="w-16 h-16 bg-orange-100 text-brand-accent rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+            >
+              <i class="fas fa-recycle"></i>
+            </div>
+            <h4 class="font-bold text-lg mb-2">Sustentabilidade</h4>
+            <p class="text-gray-600 text-sm">
+              Circular livros reduz o impacto ambiental e evita o desperdício de
+              papel.
+            </p>
+          </div>
+          <div class="p-6">
+            <div
+              class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+            >
+              <i class="fas fa-wallet"></i>
+            </div>
+            <h4 class="font-bold text-lg mb-2">Economia</h4>
+            <p class="text-gray-600 text-sm">
+              Encontre títulos incríveis por até 70% menos que o valor de capa.
+            </p>
+          </div>
+          <div class="p-6">
+            <div
+              class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"
+            >
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h4 class="font-bold text-lg mb-2">Garantia de Qualidade</h4>
+            <p class="text-gray-600 text-sm">
+              Todos os livros são verificados. Garantimos a condição descrita ou
+              seu dinheiro de volta.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-8">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-4 md:mb-0">
+            <span class="font-serif font-bold text-xl text-white"
+              >Livraria Circular</span
+            >
+            <p class="text-sm mt-1">
+              &copy; 2023 Todos os direitos reservados.
+            </p>
+          </div>
+          <div class="flex gap-6">
+            <a href="#" class="hover:text-white transition"
+              ><i class="fab fa-instagram text-xl"></i
+            ></a>
+            <a href="#" class="hover:text-white transition"
+              ><i class="fab fa-twitter text-xl"></i
+            ></a>
+            <a href="#" class="hover:text-white transition"
+              ><i class="fab fa-facebook text-xl"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Modal de Detalhes do Livro -->
+    <div
+      id="book-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative animate-fade-in"
+      >
+        <button
+          onclick="closeModal()"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+          <i class="fas fa-times text-xl"></i>
+        </button>
+
+        <div class="flex flex-col md:flex-row">
+          <!-- Imagem no Modal -->
+          <div
+            class="w-full md:w-1/3 bg-gray-100 flex items-center justify-center p-6"
+          >
+            <img
+              id="modal-img"
+              src=""
+              alt="Capa do Livro"
+              class="shadow-lg max-h-64 object-contain"
+            />
+          </div>
+
+          <!-- Informações no Modal -->
+          <div class="w-full md:w-2/3 p-6 sm:p-8">
+            <span
+              id="modal-tag"
+              class="text-xs font-bold px-2 py-1 rounded bg-blue-100 text-blue-800 mb-2 inline-block"
+              >Venda</span
+            >
+            <h2
+              id="modal-title"
+              class="text-2xl font-serif font-bold text-gray-900 mb-1"
+            >
+              Título do Livro
+            </h2>
+            <p id="modal-author" class="text-gray-600 italic mb-4">
+              Autor do Livro
+            </p>
+
+            <div class="mb-4">
+              <span class="text-sm text-gray-500 block">Condição:</span>
+              <div class="flex text-yellow-500 text-sm mb-1" id="modal-rating">
+                <!-- Estrelas inseridas via JS -->
+              </div>
+              <span id="modal-condition" class="font-medium text-gray-700"
+                >Seminovo</span
+              >
+            </div>
+
+            <p
+              id="modal-desc"
+              class="text-gray-600 text-sm mb-6 leading-relaxed"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+
+            <div class="flex items-center justify-between mt-auto">
+              <span id="modal-price" class="text-2xl font-bold text-brand-brown"
+                >R$ 00,00</span
+              >
+              <button
+                onclick="addToCartFromModal()"
+                class="bg-brand-accent hover:bg-orange-700 text-white font-bold py-2 px-6 rounded transition flex items-center gap-2"
+              >
+                <i class="fas fa-cart-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Dados Mockados dos Livros
+      const books = [
+        {
+          id: 1,
+          title: "O Pequeno Príncipe",
+          author: "Antoine de Saint-Exupéry",
+          price: 15.0,
+          type: "venda", // venda ou troca
+          condition: "Usado - Bom",
+          cover:
+            "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
+          desc: "Um clássico da literatura mundial. O livro apresenta marcas leves de uso na capa, mas as páginas estão intactas sem grifos.",
+        },
+        {
+          id: 2,
+          title: "1984",
+          author: "George Orwell",
+          price: 25.0,
+          type: "troca",
+          condition: "Seminovo",
+          cover:
+            "https://images.unsplash.com/photo-1531901599143-df5010ab9438?auto=format&fit=crop&q=80&w=400",
+          desc: "Edição especial de capa dura. Lido apenas uma vez. Aceito troca por ficção científica contemporânea.",
+        },
+        {
+          id: 3,
+          title: "Dom Casmurro",
+          author: "Machado de Assis",
+          price: 12.0,
+          type: "venda",
+          condition: "Usado - Marcas do tempo",
+          cover:
+            "https://images.unsplash.com/photo-1629196914375-f7e48f477b6d?auto=format&fit=crop&q=80&w=400",
+          desc: "Edição de bolso antiga. Folhas amareladas, ideal para quem gosta de livros com história.",
+        },
+        {
+          id: 4,
+          title: "Harry Potter e a Pedra Filosofal",
+          author: "J.K. Rowling",
+          price: 35.0,
+          type: "venda",
+          condition: "Novo",
+          cover:
+            "https://images.unsplash.com/photo-1618666012174-83b441c0bc76?auto=format&fit=crop&q=80&w=400",
+          desc: "Livro nunca lido, ainda no plástico. Recebi de presente mas já tinha.",
+        },
+        {
+          id: 5,
+          title: "Sapiens: Uma Breve História",
+          author: "Yuval Noah Harari",
+          price: 0,
+          type: "troca",
+          condition: "Bom",
+          cover:
+            "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=400",
+          desc: "Troco por 'Homo Deus' ou livros de história geral. Tem alguns grifos a lápis.",
+        },
+        {
+          id: 6,
+          title: "O Senhor dos Anéis",
+          author: "J.R.R. Tolkien",
+          price: 45.0,
+          type: "venda",
+          condition: "Seminovo",
+          cover:
+            "https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?auto=format&fit=crop&q=80&w=400",
+          desc: "Volume único. Estado impecável de conservação.",
+        },
+        {
+          id: 7,
+          title: "A Revolução dos Bichos",
+          author: "George Orwell",
+          price: 18.0,
+          type: "venda",
+          condition: "Usado - Bom",
+          cover:
+            "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=400",
+          desc: "Capa mole. Leves desgastes nas pontas.",
+        },
+        {
+          id: 8,
+          title: "It: A Coisa",
+          author: "Stephen King",
+          price: 50.0,
+          type: "troca",
+          condition: "Usado - Bom",
+          cover:
+            "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&q=80&w=400",
+          desc: "Troco por box de Sherlock Holmes ou Edgar Allan Poe.",
+        },
+      ];
+
+      let cartCount = 0;
+      let currentFilter = "all";
+      let currentModalBookId = null;
+
+      // Renderização dos Livros
+      function renderBooks(filter = "all", searchQuery = "") {
+        const grid = document.getElementById("book-grid");
+        grid.innerHTML = "";
+
+        const filteredBooks = books.filter((book) => {
+          const matchesFilter = filter === "all" || book.type === filter;
+          const matchesSearch =
+            book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            book.author.toLowerCase().includes(searchQuery.toLowerCase());
+          return matchesFilter && matchesSearch;
+        });
+
+        if (filteredBooks.length === 0) {
+          document.getElementById("no-results").classList.remove("hidden");
+        } else {
+          document.getElementById("no-results").classList.add("hidden");
+
+          filteredBooks.forEach((book) => {
+            // Define cores baseadas no tipo
+            const badgeColor =
+              book.type === "venda"
+                ? "bg-green-100 text-green-800"
+                : "bg-purple-100 text-purple-800";
+            const badgeText = book.type === "venda" ? "Venda" : "Troca";
+            const priceText =
+              book.type === "venda"
+                ? `R$ ${book.price.toFixed(2).replace(".", ",")}`
+                : "Para Troca";
+
+            const card = document.createElement("div");
+            card.className =
+              "book-card bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col transition duration-300";
+            card.innerHTML = `
+                        <div class="relative h-64 overflow-hidden group cursor-pointer" onclick="openModal(${book.id})">
+                            <img src="${book.cover}" alt="${book.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://placehold.co/400x600?text=Sem+Capa'">
+                            <span class="absolute top-2 right-2 ${badgeColor} text-xs font-bold px-2 py-1 rounded shadow-sm">${badgeText}</span>
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                                <span class="text-white bg-black bg-opacity-70 px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 text-sm font-bold">Ver Detalhes</span>
+                            </div>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <div class="text-xs text-gray-400 mb-1">${book.condition}</div>
+                            <h3 class="font-bold text-lg text-gray-800 leading-tight mb-1 truncate" title="${book.title}">${book.title}</h3>
+                            <p class="text-sm text-gray-500 mb-4">${book.author}</p>
+                            
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="font-bold text-brand-brown text-lg">${priceText}</span>
+                                <button onclick="addToCart(event)" class="text-brand-accent hover:bg-brand-accent hover:text-white border border-brand-accent rounded-full w-8 h-8 flex items-center justify-center transition">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+            grid.appendChild(card);
+          });
+        }
+      }
+
+      // Sistema de Filtros
+      function filterBooks(type) {
+        currentFilter = type;
+        const buttons = document.querySelectorAll(".filter-btn");
+        buttons.forEach((btn) => {
+          if (
+            btn.textContent.toLowerCase() === type ||
+            (type === "all" && btn.textContent === "Todos") ||
+            (type === "venda" && btn.textContent === "Comprar") ||
+            (type === "troca" && btn.textContent === "Trocar")
+          ) {
+            btn.classList.remove(
+              "text-gray-600",
+              "bg-white",
+              "hover:bg-gray-100"
+            );
+            btn.classList.add("bg-brand-brown", "text-white");
+          } else {
+            btn.classList.add("text-gray-600", "hover:bg-gray-100");
+            btn.classList.remove("bg-brand-brown", "text-white");
+          }
+        });
+        const searchVal = document.getElementById("searchInput").value;
+        renderBooks(currentFilter, searchVal);
+      }
+
+      // Sistema de Busca
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        renderBooks(currentFilter, e.target.value);
+      });
+
+      // Carrinho / Toast
+      function addToCart(e) {
+        if (e) e.stopPropagation(); // Previne abrir o modal se clicar no botão
+        cartCount++;
+        document.getElementById("cart-count").innerText = cartCount;
+        showToast("Item adicionado à sacola!");
+      }
+
+      function addToCartFromModal() {
+        addToCart();
+        closeModal();
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toast-message").innerText = message;
+        toast.classList.remove("translate-x-full");
+        setTimeout(() => {
+          toast.classList.add("translate-x-full");
+        }, 3000);
+      }
+
+      // Modal
+      function openModal(id) {
+        const book = books.find((b) => b.id === id);
+        if (!book) return;
+        currentModalBookId = id;
+
+        document.getElementById("modal-img").src = book.cover;
+        document.getElementById("modal-title").innerText = book.title;
+        document.getElementById("modal-author").innerText = book.author;
+        document.getElementById("modal-condition").innerText = book.condition;
+        document.getElementById("modal-desc").innerText = book.desc;
+
+        const priceEl = document.getElementById("modal-price");
+        priceEl.innerText =
+          book.type === "venda"
+            ? `R$ ${book.price.toFixed(2).replace(".", ",")}`
+            : "Disponível para Troca";
+
+        const tagEl = document.getElementById("modal-tag");
+        tagEl.innerText = book.type === "venda" ? "Venda" : "Troca";
+        tagEl.className = `text-xs font-bold px-2 py-1 rounded mb-2 inline-block ${
+          book.type === "venda"
+            ? "bg-green-100 text-green-800"
+            : "bg-purple-100 text-purple-800"
+        }`;
+
+        // Renderizar estrelas fictícias baseadas no ID (só para visual)
+        let starsHtml = "";
+        for (let i = 0; i < 5; i++) {
+          starsHtml +=
+            i < 4
+              ? '<i class="fas fa-star"></i>'
+              : '<i class="far fa-star"></i>';
+        }
+        document.getElementById("modal-rating").innerHTML = starsHtml;
+
+        document.getElementById("book-modal").classList.remove("hidden");
+        document.body.style.overflow = "hidden"; // Trava scroll do fundo
+      }
+
+      function closeModal() {
+        document.getElementById("book-modal").classList.add("hidden");
+        document.body.style.overflow = "auto"; // Destrava scroll
+      }
+
+      // Fechar modal ao clicar fora
+      document.getElementById("book-modal").addEventListener("click", (e) => {
+        if (e.target.id === "book-modal") closeModal();
+      });
+
+      // Inicialização
+      document.addEventListener("DOMContentLoaded", () => {
+        renderBooks();
+      });
+    </script>
+  </body>
+</html>
