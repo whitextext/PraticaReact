@@ -231,7 +231,7 @@ const ZoneCard = ({
 
         {/* Indicador de Tendência (O "Status" visual) */}
         <div className="flex flex-col items-end">
-          <div className="flex items-center gap-1 rounded border border-slate-700 bg-slate-900 px-2 py-1">
+          <div className="flex items-center gap-1 rounded-sm border border-slate-700 bg-slate-900 px-2 py-1">
             <TrendIcon trend={zone.performanceTrend} />
             <span
               className={`text-xs font-bold ${zone.performanceTrend === "up" ? "text-green-500" : zone.performanceTrend === "down" ? "text-red-500" : "text-slate-500"}`}
@@ -282,7 +282,7 @@ const ZoneCard = ({
 
       {/* Alertas Críticos (Impacto) */}
       {zone.activeTasks.some((t) => t.impact === "CRITICO") && (
-        <div className="mt-4 flex animate-pulse items-center gap-2 rounded border border-red-900/50 bg-red-950/30 p-2 text-xs font-bold text-red-400">
+        <div className="mt-4 flex animate-pulse items-center gap-2 rounded-sm border border-red-900/50 bg-red-950/30 p-2 text-xs font-bold text-red-400">
           <AlertOctagon size={14} />
           Ação Crítica Necessária
         </div>
@@ -298,10 +298,10 @@ const BusinessTaskBoard = ({ zones }: { zones: ZoneData[] }) => {
   );
 
   const TaskCard = ({ task }: { task: (typeof allTasks)[0] }) => (
-    <div className="group cursor-pointer rounded-lg border border-slate-700 bg-slate-800 p-4 shadow-sm transition-colors hover:border-slate-500">
+    <div className="group cursor-pointer rounded-lg border border-slate-700 bg-slate-800 p-4 shadow-xs transition-colors hover:border-slate-500">
       <div className="mb-2 flex items-start justify-between">
         <span
-          className={`rounded border px-2 py-0.5 text-[10px] font-bold ${getImpactColor(task.impact)}`}
+          className={`rounded-sm border px-2 py-0.5 text-[10px] font-bold ${getImpactColor(task.impact)}`}
         >
           IMPACTO {task.impact}
         </span>
@@ -316,7 +316,7 @@ const BusinessTaskBoard = ({ zones }: { zones: ZoneData[] }) => {
 
       <div className="mt-3 flex items-center justify-between border-t border-slate-700/50 pt-3">
         <span className="text-xs text-slate-500">{task.zoneName}</span>
-        <span className="rounded bg-slate-900 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-600">
+        <span className="rounded-sm bg-slate-900 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-600">
           {task.category}
         </span>
       </div>
@@ -336,10 +336,10 @@ const BusinessTaskBoard = ({ zones }: { zones: ZoneData[] }) => {
         </div>
         <div className="flex gap-2">
           <span className="flex items-center gap-1 text-xs text-slate-400">
-            <div className="h-3 w-3 rounded-sm bg-red-500"></div> Crítico
+            <div className="h-3 w-3 rounded-xs bg-red-500"></div> Crítico
           </span>
           <span className="flex items-center gap-1 text-xs text-slate-400">
-            <div className="h-3 w-3 rounded-sm bg-orange-500"></div> Alto Risco
+            <div className="h-3 w-3 rounded-xs bg-orange-500"></div> Alto Risco
           </span>
         </div>
       </div>
@@ -428,7 +428,7 @@ export default function ModeloGemini() {
       {/* HUD Superior (Business Intelligence Header) */}
       <header className="z-50 flex h-16 items-center justify-between border-b border-slate-800 bg-slate-900 px-6 shadow-md">
         <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-gradient-to-br from-green-600 to-green-800 p-2 shadow-lg">
+          <div className="rounded-lg bg-linear-to-br from-green-600 to-green-800 p-2 shadow-lg">
             <Sprout className="text-white" size={20} />
           </div>
           <div>
@@ -442,16 +442,16 @@ export default function ModeloGemini() {
         </div>
 
         {/* Menu Central Profissional */}
-        <nav className="hidden rounded-lg border border-slate-700/50 bg-slate-800/50 p-1 backdrop-blur-sm md:flex">
+        <nav className="hidden rounded-lg border border-slate-700/50 bg-slate-800/50 p-1 backdrop-blur-xs md:flex">
           <button
             onClick={() => setCurrentView("map")}
-            className={`flex items-center gap-2 rounded-md px-5 py-2 text-sm font-bold transition-all ${currentView === "map" ? "bg-slate-700 text-white shadow-sm ring-1 ring-slate-600" : "text-slate-400 hover:text-white"}`}
+            className={`flex items-center gap-2 rounded-md px-5 py-2 text-sm font-bold transition-all ${currentView === "map" ? "bg-slate-700 text-white shadow-xs ring-1 ring-slate-600" : "text-slate-400 hover:text-white"}`}
           >
             <MapIcon size={16} /> Visão Operacional
           </button>
           <button
             onClick={() => setCurrentView("tasks")}
-            className={`flex items-center gap-2 rounded-md px-5 py-2 text-sm font-bold transition-all ${currentView === "tasks" ? "bg-slate-700 text-white shadow-sm ring-1 ring-slate-600" : "text-slate-400 hover:text-white"}`}
+            className={`flex items-center gap-2 rounded-md px-5 py-2 text-sm font-bold transition-all ${currentView === "tasks" ? "bg-slate-700 text-white shadow-xs ring-1 ring-slate-600" : "text-slate-400 hover:text-white"}`}
           >
             <CheckCircle2 size={16} /> Gestão de Tarefas
           </button>
@@ -481,7 +481,7 @@ export default function ModeloGemini() {
       </header>
 
       {/* Conteúdo Principal */}
-      <main className="relative flex-1 overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
+      <main className="relative flex-1 overflow-hidden bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
         {/* VIEW: MAPA OPERACIONAL */}
         {currentView === "map" && (
           <div className="h-full overflow-y-auto p-8">
