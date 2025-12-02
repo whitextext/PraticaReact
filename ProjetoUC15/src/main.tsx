@@ -1,12 +1,12 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
 // * Importa o arquivo de estilos global tailwind
-import '@/styles/index.css';
-import App from './App.tsx';
+import "@/styles/index.css";
+import { App } from "@/App.tsx";
 
-const root = document.getElementById('root');
+const root = document.getElementById("root");
 
 if (root) {
   createRoot(root).render(
@@ -15,5 +15,5 @@ if (root) {
         <App />
       </BrowserRouter>
     </StrictMode>,
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import { Banner } from "@/components/Banner";
-import { InformativeSection } from "@/components/InformativeSection";
-import { BookDetails } from "@/components/BookDetails";
+import { Banner } from "@/components/ConteudoFinal/Banner";
+import { InformativeSection } from "@/components/ConteudoFinal/InformativeSection";
+import { BookDetails } from "@/components/ConteudoFinal/BookDetails";
 
 export function Main() {
   return (

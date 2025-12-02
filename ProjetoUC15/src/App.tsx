@@ -1,15 +1,15 @@
-import { Header } from "@/pages/Header";
-import { Main } from "@/pages/Main";
-import { Footer } from "@/pages/Footer";
+import { Routes, Route } from "react-router-dom";
 
-function App() {
+import PaginaPrincipal from "@/pages/PaginaPrincipal";
+import ModeloGemini from "@/pages/modeloGemini";
+import TreinoTailwind from "@/pages/TreinoTailwind";
+
+export function App() {
   return (
-    <div className="">
-      <Header />
-      <Main />
-      <Footer />
-    </div>
+    <Routes>
+      <Route path="/" element={<PaginaPrincipal />} />
+      <Route path="/Modelo" element={<ModeloGemini />} />
+      <Route path="/Tail" element={<TreinoTailwind />} />
+    </Routes>
   );
 }
-
-export default App;
